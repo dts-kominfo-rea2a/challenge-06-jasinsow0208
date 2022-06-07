@@ -1,4 +1,5 @@
 // TODO: import module bila dibutuhkan di sini
+const fs = require("fs");
 
 // ! JANGAN DIMODIFIKASI
 let file1 = "./data1.json";
@@ -18,7 +19,45 @@ let modifyFile3 = (val) => {
 
 // TODO: Kerjakan bacaData
 // gunakan variabel file1, file2, dan file3
-const bacaData = null;
+const bacaData = (fnCallback) => {
+  let dataString = [];
+  let errCallback = "";
+
+  fs.readFile(file1, "utf8", (err, data) => {
+    if (err) {
+      fnCallback(err, null);
+    } else {
+      const objectHasilBacaan = JSON.parse(data);
+      const message = objectHasilBacaan.message.split(" ");
+      //console.log(message);
+      dataString.push(message[1]);
+      //console.log(dataString);
+    }
+  });
+
+  fs.readFile(file2, "utf8", (err, data) => {
+    if (err) {
+      fnCallback(err, null);
+    } else {
+      const objectHasilBacaan = JSON.parse(data);
+      const message = objectHasilBacaan[0].message.split(" ");
+      //console.log(message);
+      dataString.push(message[1]);
+      //console.log(dataString);
+    }
+  });
+
+  fs.readFile(file3, "utf8", (err, data) => {
+    if (err) {
+      fnCallback(err, null);
+    } else {
+      const objectHasilBacaan = JSON.parse(data);
+      const message = objectHasilBacaan[0].data.message.split(" ");
+      dataString.push(message[1]);
+      fnCallback(null, dataString);
+    }
+  });
+};
 
 // ! JANGAN DIMODIFIKASI
 module.exports = {
