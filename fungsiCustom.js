@@ -21,40 +21,35 @@ let modifyFile3 = (val) => {
 // gunakan variabel file1, file2, dan file3
 const bacaData = (fnCallback) => {
   let dataString = [];
-  let errCallback = "";
 
   fs.readFile(file1, "utf8", (err, data) => {
     if (err) {
       fnCallback(err, null);
     } else {
-      const objectHasilBacaan = JSON.parse(data);
-      const message = objectHasilBacaan.message.split(" ");
-      //console.log(message);
-      dataString.push(message[1]);
-      //console.log(dataString);
-    }
-  });
+      fs.readFile(file2, "utf8", (err, data2) => {
+        if (err) {
+          fnCallback(err, null);
+        } else {
+          fs.readFile(file3, "utf8", (err, data3) => {
+            if (err) {
+              fnCallback(err, null);
+            } else {
+              const objectHasilBacaan = JSON.parse(data);
+              const message = objectHasilBacaan.message.split(" ");
+              dataString.push(message[1]);
 
-  fs.readFile(file2, "utf8", (err, data) => {
-    if (err) {
-      fnCallback(err, null);
-    } else {
-      const objectHasilBacaan = JSON.parse(data);
-      const message = objectHasilBacaan[0].message.split(" ");
-      //console.log(message);
-      dataString.push(message[1]);
-      //console.log(dataString);
-    }
-  });
+              const objectHasilBacaan2 = JSON.parse(data2);
+              const message2 = objectHasilBacaan2[0].message.split(" ");
+              dataString.push(message2[1]);
 
-  fs.readFile(file3, "utf8", (err, data) => {
-    if (err) {
-      fnCallback(err, null);
-    } else {
-      const objectHasilBacaan = JSON.parse(data);
-      const message = objectHasilBacaan[0].data.message.split(" ");
-      dataString.push(message[1]);
-      fnCallback(null, dataString);
+              const objectHasilBacaan3 = JSON.parse(data3);
+              const message3 = objectHasilBacaan3[0].data.message.split(" ");
+              dataString.push(message3[1]);
+              fnCallback(null, dataString);
+            }
+          });
+        }
+      });
     }
   });
 };
